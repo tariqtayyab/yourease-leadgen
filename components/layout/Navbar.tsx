@@ -66,10 +66,10 @@ export default function Navbar() {
   return (
     <>
       <nav className={`fixed top-0 left-0 w-full z-[999] transition-all duration-300 ${
-        scrolled ? 'bg-black/5 backdrop-blur-sm' : ''
+        scrolled ? '' : ''
       }`}>
         <div className="container-custom py-3">
-          <div className="bg-black/10 backdrop-blur-sm border border-white/20 rounded-full px-8 py-3">
+          <div className="bg-black/15 backdrop-blur-sm border border-white/20 rounded-full px-8 py-3 lg:px-10 lg:py-4">
             <div className="flex items-center justify-between">
               {/* Logo */}
               <button 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { motion, useAnimation, useInView, Variants } from 'framer-motion'
 import Link from 'next/link'
@@ -36,6 +36,7 @@ export default function Hero() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.3 })
   const pulseRef = useRef<HTMLDivElement>(null)
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   useEffect(() => {
     if (isInView) {
@@ -62,8 +63,23 @@ export default function Hero() {
     }
   }, [])
 
+    const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      const offset = 80 // Height of navbar
+      const elementPosition = element.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - offset
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      })
+    }
+    setIsMenuOpen(false)
+  }
+
   return (
-    <section className="relative bg-black min-h-screen pt-32 pb-20 overflow-hidden">
+    <section className="relative bg-black min-h-screen pt-32 pb-20 overflow-hidden lg:pt-40">
       {/* Background Gradient - matching original */}
       <div className="absolute inset-0">
         <Image
@@ -127,11 +143,11 @@ export default function Hero() {
               variants={itemVariants} 
               className="flex justify-center lg:justify-start"
             >
-              <Link
-                href="https://form.typeform.com/to/frvHh03C"
-                target="_blank"
-                className="inline-flex items-center gap-2 bg-neon-lime rounded-lg px-8 py-1.5 group hover:bg-white transition-all hover:scale-105"
+              <button
+                       className="inline-flex items-center gap-2 bg-neon-lime rounded-lg px-8 py-1.5 group hover:bg-white transition-all hover:scale-105"
+                       onClick={() => scrollToSection('contact')}
               >
+                
                 <span className="text-[#222222] font-medium text-[26px] lg:text-[32px] font-trailers">Book A Call</span>
                 <Image
                   src="/images/service.svg"
@@ -140,7 +156,7 @@ export default function Hero() {
                   height={14}
                   className="ml-1"
                 />
-              </Link>
+              </button>
             </motion.div>
 
             {/* Client Text Animation - CENTERED ON MOBILE */}

@@ -5,6 +5,8 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import Services from '@/components/sections/Services';
+import Contact from '@/components/sections/Contact';
+import { motion } from 'framer-motion';
 
 // Types
 interface Service {
@@ -105,54 +107,54 @@ const clientLogos = [
 
 const whyChooseCards: WhyChooseCard[] = [
   {
-    title: 'Brand positioning',
-    description: "Blushush's team knows that until you resonate and connect with your target audience, you won't succeed in branding, and so we strategize to bring out your story, niche, and everything to position you well.",
+    title: 'SEO tuning & audits',
+    description: "Yourease performs comprehensive site audits, fixes broken links, addresses indexation issues, and implements structured data to ensure search engines can properly crawl and rank your content.",
     variant: 'lime',
   },
   {
-    title: 'Brand voice unity',
-    description: 'We never try to sound like all of the things at once; instead, Blushush focuses on creating a consistent brand voice that emphasizes what you do, why it matters, and why people should care.',
+    title: 'On-page optimization',
+    description: 'We optimize page speed for both mobile and desktop through asset compression, caching, and code minification—because slow websites push audiences away forever.',
     variant: 'blue',
   },
   {
-    title: 'Visual makeover',
-    description: 'For your identity is our responsibility. We go through each and every detail and element, from design, fonts, logo, colors, and imagery, to make sure they all synchronize to express your personality and deliver a clean message.',
+    title: 'Content optimization',
+    description: 'We restructure existing content for better rankings, perform internal linking and content gap analysis, and provide strategic advice for new content that drives results.',
     variant: 'lime',
   },
   {
-    title: 'Brand guidelines',
-    description: 'For every personal branding project, we design an exhaustive document that contains everything from tones and visuals to photography and social media, and we make sure things are done in the exact manner.',
+    title: 'Conversion-focused SEO',
+    description: 'Yourease aligns your content relevance with sales conversion through higher rankings, ensuring every optimization effort contributes directly to your bottom line.',
     variant: 'blue',
   },
 ];
 
 const snapCards: SnapCard[] = [
   {
-    title: 'Working on customer perception',
-    description: 'Our creative team at Blushush is interested in redefining how people see you. For us, you are the brand, and that\'s the initial thought with which we move ahead.',
+    title: 'We’ve got you covered',
+    description: 'From on-page SEO to off-page optimization, Yourease always runs that extra mile to make sure we have both sides covered and in sync. Our technical team goes beyond keywords, meta descriptions, and page titles to define the true value and relevance of your website with proper content management.',
     stats: [
-      { value: '25%', label: 'increase sales' },
-      { value: '76%', label: 'Trust boost' },
+      { value: '35%', label: 'faster growth' },
+      { value: '82%', label: 'client retention' },
     ],
     image: 'https://cdn.prod.website-files.com/67ece9bf9a58e5528ea1455d/681789816b73f738faec9457_mo-uEsjoCzALaU-unsplash.avif',
     variant: 'dark',
   },
   {
-    title: 'Branding is an art, we are the artist',
-    description: 'We don\'t want to show you templates, ready to use models, and suggest strategies that have worked for someone else. We sit with you to understand your vision.',
+    title: 'Only tailor-made solutions',
+    description: 'We never settle for the mediocre. No generic SEO activities. No more struggling and underperforming websites. Yourease delivers the best and most relevant optimization that meticulously strategizes SEO operations for your unique business needs.',
     stats: [
-      { value: '500M', label: 'reach' },
-      { value: '30+', label: 'Investment' },
+      { value: '150+', label: 'projects delivered' },
+      { value: '95%', label: 'client satisfaction' },
     ],
     image: 'https://cdn.prod.website-files.com/67ece9bf9a58e5528ea1455d/681789816b73f738faec944d_pexels-francesco-ungaro-1326999.avif',
     variant: 'light',
   },
   {
-    title: 'We collaborate so we could customize',
-    description: 'At Blushush, we firmly believe that branding is personal, it is not something you do at random without any thought or perspective.',
+    title: 'Be relevant, reachable, and ranking',
+    description: 'Yourease knows how hard it is to rank in search engines. You need to stay relevant, visible, and the first choice of your target audience. We stay updated with the latest Google trends and SEO policies, driving maximum organic traffic relevant to your business.',
     stats: [
       { value: '200%', label: 'increase sales' },
-      { value: '76k', label: 'Trust boost' },
+      { value: '100%', label: 'custom strategies' },
     ],
     image: 'https://cdn.prod.website-files.com/67ece9bf9a58e5528ea1455d/681789816b73f738faec9444_pexels-mo-8347499.avif',
     variant: 'dark',
@@ -206,14 +208,14 @@ const portfolioItems: PortfolioItem[] = [
 
 const TextMarquee: React.FC = () => {
   return (
-    <div className="bg-[#3665fb] py-4 overflow-hidden">
+    <div className="bg-[#3665fb] py-3 md:py-4 overflow-hidden">
       <div className="flex whitespace-nowrap animate-marquee-text">
         {[...Array(6)].map((_, i) => (
           <span
             key={i}
-            className="text-white text-3xl md:text-5xl font-bold mx-8 font-['TT_Trailers']"
+            className="text-white text-xl sm:text-2xl md:text-3xl lg:text-5xl font-bold mx-4 md:mx-8 font-['TT_Trailers']"
           >
-            // Unleashing the power of BRANDING
+            // We make you rank, we make you reach. We make you relevant.
           </span>
         ))}
       </div>
@@ -233,17 +235,26 @@ const TextMarquee: React.FC = () => {
 
 const WhyChooseCard: React.FC<WhyChooseCard & { index: number }> = ({ title, description, variant, index }) => {
   const isLime = variant === 'lime';
-  const baseClasses = "rounded-full w-[280px] h-[280px] md:w-[350px] md:h-[350px] flex flex-col items-center justify-center p-8 text-center transition-transform hover:scale-105";
+  const baseClasses = "rounded-full flex flex-col items-center justify-center p-6 md:p-8 text-center transition-transform hover:scale-105";
+  const mobileSizeClasses = "w-[260px] h-[260px]";
+  const mdSizeClasses = "md:w-[300px] md:h-[300px]";
+  const lgSizeClasses = "lg:w-[350px] lg:h-[350px]";
   const colorClasses = isLime 
     ? "bg-[#d1fd68] text-gray-900" 
     : "bg-[#3665fb] text-white";
   
+  // Higher index = higher z-index (card 0 at bottom, card 3 on top)
+  const zIndex = whyChooseCards.length - index;
+  
   return (
     <div 
-      className={`${baseClasses} ${colorClasses} ${index > 0 ? '-ml-10 md:-ml-12' : ''} relative shadow-lg`}
-      style={{ zIndex: index }}
+      className={`${baseClasses} ${mobileSizeClasses} ${mdSizeClasses} ${lgSizeClasses} ${colorClasses} relative shadow-lg`}
+      style={{ 
+        zIndex: zIndex,
+        marginLeft: index > 0 ? '-30px' : '0px'
+      }}
     >
-      <h3 className="text-2xl md:text-3xl font-bold mb-4 font-['GeneralSans'] leading-tight">
+      <h3 className="text-xl md:text-2xl lg:text-3xl font-bold mb-3 md:mb-4 font-['GeneralSans'] leading-tight">
         {title.split(' ').map((word, i) => (
           <React.Fragment key={i}>
             {word}
@@ -251,7 +262,7 @@ const WhyChooseCard: React.FC<WhyChooseCard & { index: number }> = ({ title, des
           </React.Fragment>
         ))}
       </h3>
-      <p className={`text-sm md:text-base leading-relaxed ${isLime ? 'text-gray-700' : 'text-gray-200'}`}>
+      <p className={`text-xs md:text-sm lg:text-base leading-relaxed ${isLime ? 'text-gray-700' : 'text-gray-200'}`}>
         {description}
       </p>
     </div>
@@ -261,24 +272,24 @@ const WhyChooseCard: React.FC<WhyChooseCard & { index: number }> = ({ title, des
 const ServiceCard: React.FC<Service> = ({ title, description, icon, href }) => {
   return (
     <Link href={href} className="group block">
-      <div className="bg-white rounded-xl p-6 md:p-8 border-t-8 border-[#d1fd68] hover:shadow-xl transition-all duration-300 h-full">
-        <div className="flex items-start gap-4 mb-4">
+      <div className="bg-white rounded-xl p-4 sm:p-6 md:p-8 border-t-8 border-[#d1fd68] hover:shadow-xl transition-all duration-300 h-full">
+        <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
           <Image
             src={icon}
             alt={title}
             width={40}
             height={40}
-            className="w-10 h-10 object-contain"
+            className="w-8 h-8 md:w-10 md:h-10 object-contain flex-shrink-0"
           />
-          <h3 className="text-xl md:text-2xl font-bold font-['TT_Trailers'] uppercase">
+          <h3 className="text-lg sm:text-xl md:text-2xl font-bold font-['TT_Trailers'] uppercase leading-tight">
             {title}
           </h3>
         </div>
-        <p className="text-gray-600 mb-4 text-sm md:text-base font-['GeneralSans']">
+        <p className="text-gray-600 mb-3 md:mb-4 text-sm md:text-base font-['GeneralSans']">
           <strong>{description}</strong>
         </p>
         <div className="flex items-center gap-2 text-gray-900 font-semibold group-hover:gap-4 transition-all">
-          <span className="font-['TT_Trailers'] text-lg">See more</span>
+          <span className="font-['TT_Trailers'] text-base md:text-lg">See more</span>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
@@ -290,8 +301,8 @@ const ServiceCard: React.FC<Service> = ({ title, description, icon, href }) => {
 
 const PortfolioCard: React.FC<PortfolioItem> = ({ title, category, image, href }) => {
   return (
-    <Link href={href} className="group block break-inside-avoid mb-6">
-      <div className="relative overflow-hidden rounded-2xl mb-4">
+    <Link href={href} className="group block break-inside-avoid mb-4 md:mb-6">
+      <div className="relative overflow-hidden rounded-xl md:rounded-2xl mb-3 md:mb-4">
         <div className="aspect-[4/3] relative">
           <Image
             src={image}
@@ -301,24 +312,32 @@ const PortfolioCard: React.FC<PortfolioItem> = ({ title, category, image, href }
           />
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div className="bg-[#d1fd68] rounded-full w-16 h-16 flex items-center justify-center">
-              <span className="text-gray-900 font-semibold text-sm uppercase tracking-wider">View</span>
+            <div className="bg-[#d1fd68] rounded-full w-12 h-12 md:w-16 md:h-16 flex items-center justify-center">
+              <span className="text-gray-900 font-semibold text-xs md:text-sm uppercase tracking-wider">View</span>
             </div>
           </div>
         </div>
       </div>
-      <h3 className="text-xl font-bold uppercase font-['TT_Trailers'] mb-2">{title}</h3>
-      <p className="text-gray-500 text-sm font-['GeneralSans']">{category}</p>
+      <h3 className="text-lg md:text-xl font-bold uppercase font-['TT_Trailers'] mb-1 md:mb-2">{title}</h3>
+      <p className="text-gray-500 text-xs md:text-sm font-['GeneralSans'] leading-relaxed">{category}</p>
     </Link>
   );
 };
 
 // Main Page Component
-export default function ServicesPage(): JSX.Element {
+export default function SEOOptimizationPage(): JSX.Element {
   const [scrolled, setScrolled] = useState(false);
 const [activeIndex, setActiveIndex] = useState(0);
 const [progress, setProgress] = useState(0);
 const snapContainerRef = useRef<HTMLDivElement>(null);
+
+const scrollToContact = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
 useEffect(() => {
   const handleSnapScroll = () => {
@@ -359,41 +378,47 @@ useEffect(() => {
   return (
     <>
       <Head>
-        <title>Services | Blushush - Branding Agency</title>
-        <meta name="description" content="Transform your business into a brand with Blushush. We offer branding, UI/UX design, Webflow development, and more." />
+        <title>SEO & Performance Optimization | Yourease - SEO Agency</title>
+        <meta name="description" content="Boost your rankings and visibility with Yourease's SEO and performance optimization. We make you rank, we make you reach, we make you relevant." />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </Head>
 
       <main className="min-h-screen bg-white font-['GeneralSans']">
+        <button
+  onClick={() => window.history.back()}
+  className="group inline-flex items-center transition-transform hover:scale-105 p-2 md:p-0"
+>
+  <Image
+    src="/images/service.svg"
+    alt="Go back"
+    width={14}
+    height={18}
+    className="scale-x-[-1] mt-4 md:mt-7 ml-4 md:ml-7 transition-transform group-hover:translate-x-[-2px] w-3 h-4 md:w-[18px] md:h-[24px]"
+  />
+</button>
         {/* Hero Section */}
-        <section className="relative pt-32 md:pt-40 pb-16 md:pb-24 px-4 sm:px-6 lg:px-8 xl:px-12">
-          <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 xl:px-20">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <section className="relative mt-2 md:mt-3 pb-12 md:pb-16 lg:pb-24 px-4 sm:px-6 lg:px-8 xl:px-12">
+          <div className="w-full px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 xl:px-20">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
               <div>
                 <div className="relative">
-                  <h1 className="text-6xl sm:text-7xl md:text-9xl lg:text-[10rem] font-bold uppercase leading-[0.85] font-['TT_Trailers'] text-gray-900">
-                    Branding
+                  <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl xl:text-[10rem] font-bold uppercase leading-[0.85] font-['TT_Trailers'] text-gray-900">
+                    SEO & Performance Optimization
                   </h1>
-                  <div className="absolute -top-8 -left-4 md:-top-12 md:-left-8">
+                  <div className="absolute -top-4 -left-2 md:-top-8 md:-left-4 lg:-top-12 lg:-left-8">
                   </div>
                 </div>
-                <p className="mt-8 text-xl md:text-4xl whitespace-nowrap text-[#303030] font-['GeneralSans']">
-                  Branding has never been this personal before
+                <p className="mt-4 md:mt-8 text-lg sm:text-xl md:text-2xl lg:text-4xl whitespace-normal md:whitespace-nowrap text-[#303030] font-['GeneralSans']">
+                  We make you rank, we make you reach. We make you relevant.
                 </p>
-                <Link
-                  href="#contact"
-                  className="inline-flex items-center gap-3 mt-8 px-8 py-2 bg-[#d1fd68] text-gray-900 rounded-lg font-bold text-lg hover:bg-gray-900 hover:text-white transition-all duration-300 group"
-                >
-                  <span className="font-['TT_Trailers'] text-3xl tracking-wide">LET&apos;S TALK</span>
-                 <Image
-                             src="/images/service.svg"
-                             alt=""
-                             width={12}
-                             height={16}
-                             className="mb-1"
-                           />
-                </Link>
+                <button
+  onClick={scrollToContact}
+  className="inline-flex items-center gap-2 md:gap-3 mt-6 md:mt-8 px-6 md:px-8 py-2 md:py-2 bg-[#d1fd68] text-gray-900 rounded-lg font-bold text-base md:text-lg hover:bg-gray-900 hover:text-white transition-all duration-300 group"
+>
+  <span className="font-['TT_Trailers'] text-xl md:text-3xl tracking-wide">LET&apos;S TALK</span>
+  <Image src="/images/service.svg" alt="" width={12} height={16} className="mb-1 w-3 h-4 md:w-3 md:h-4" />
+</button>
               </div>
             </div>
           </div>
@@ -418,75 +443,68 @@ useEffect(() => {
         </section>
 
         {/* About Service Section */}
-        <section className="py-12 px-4 sm:px-6 lg:px-8 xl:px-12 bg-white">
-          <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 xl:px-20">
-            <div className="grid lg:grid-cols-2 gap-16 items-start">
+        <section className=" px-4 sm:px-6 lg:px-8 xl:px-12 bg-white">
+          <div className="w-full px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 xl:px-20">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-start">
               <div>
-                <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-5 font-['TT_Trailers'] text-[#000000]">
-                  Let&apos;s turn your business into a brand.
+                <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-5 font-['TT_Trailers'] text-[#000000] leading-tight">
+                  We&apos;ll help your business rank and increase visibility.
                 </h2>
-                <p className="text-[#474747] text-lg mb-8 leading-relaxed font-['GeneralSans']">
-                  Blushush will craft your brand into an unforgettable narrative. Something unforgettable, something brilliant, and something that just clicks. Through refined{' '}
-                  <Link href="/service/strategy-consultation" className="text-[#3665fb] hover:underline">strategy consultation</Link>,{' '}
-                  <Link href="/service/drive-traffic-build-funnels" className="text-[#3665fb] hover:underline">performance optimization</Link>, and an elevated{' '}
-                  <Link href="/blogs/how-blushush-turns-brand-strategy-into-scalable-high-converting-webflow-websites" className="text-[#3665fb] hover:underline">brand strategy</Link>, we turn ideas into lasting impressions.
+                <p className="text-[#474747] text-base md:text-lg mb-6 md:mb-8 leading-relaxed font-['GeneralSans']">
+                  Yourease incorporates the best strategic SEO practices. We implement performance optimization with fast load times and maximum visibility to attract organic traffic. Our approach is rooted in{' '}
+                  <Link href="/service/strategy-consultation" className="text-[#3665fb] hover:underline">brand strategy</Link> and continuous{' '}
+                  <Link href="/service/drive-traffic-build-funnels" className="text-[#3665fb] hover:underline">performance optimization</Link>, ensuring every digital element aligns with long-term growth and measurable results.
                 </p>
                 
-                <div className="space-y-6">
-                  <div className="flex gap-4">
+                <div className="space-y-4 md:space-y-6">
+                  <div className="flex gap-3 md:gap-4">
                     <div className="flex-shrink-0">
                       <Image
                         src="https://cdn.prod.website-files.com/67ece9bf9a58e5528ea1455d/67ed4938e594d0c21b216133_strategy.svg"
                         alt="Strategy"
                         width={85}
                         height={70}
-                        className="w-25 h-20 object-contain"
+                        className="w-16 h-14 md:w-20 md:h-16 lg:w-25 lg:h-20 object-contain"
                       />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold mb-2 font-['GeneralSans']">Niche integrated personality</h3>
-                      <p className="text-gray-600 text-sm leading-relaxed">
-                        You can be a business coach, founder, speaker, consultant, author or a creative figure. We strive to bring your attributes together to represent your niche.
+                      <h3 className="text-lg md:text-xl font-bold mb-1 md:mb-2 font-['GeneralSans']">Ranking and relevance</h3>
+                      <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                        Our technical team ensures complete focus towards bridging the gap between you getting found and you getting chosen.
                       </p>
                     </div>
                   </div>
                   
-                  <div className="flex gap-4">
+                  <div className="flex gap-3 md:gap-4">
                     <div className="flex-shrink-0">
                       <Image
                         src="https://cdn.prod.website-files.com/67ece9bf9a58e5528ea1455d/67ed492b26df0fc1a0cd8f29_cms.svg"
-                        alt="CMS"
+                        alt="Performance"
                         width={85}
                         height={70}
-                        className="w-25 h-20 object-contain"
+                        className="w-16 h-14 md:w-20 md:h-16 lg:w-25 lg:h-20 object-contain"
                       />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold mb-2 font-['GeneralSans']">Maximize your presence</h3>
-                      <p className="text-gray-600 text-sm leading-relaxed">
-                        We work to make you bold, clear, confident and most importantly, consistent with your voice, personality, and visual identity.
+                      <h3 className="text-lg md:text-xl font-bold mb-1 md:mb-2 font-['GeneralSans']">Performance optimization</h3>
+                      <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                        Yourease takes charge of content optimization and aims for no technical hiccups that can cost you your visibility and credibility in searches.
                       </p>
                     </div>
                   </div>
                 </div>
                 
-                <Link
-                  href="#contact"
-                  className="inline-flex items-center gap-3 mt-8 ml-5 px-8 py-4 bg-[#d1fd68] text-gray-900 rounded-lg font-bold hover:bg-gray-900 hover:text-white transition-all duration-300 group"
-                >
-                  <span className="font-['TT_Trailers'] text-3xl tracking-wide">BOOK A STRATEGY CALL</span>
-                 <Image
-                             src="/images/service.svg"
-                             alt=""
-                             width={12}
-                             height={16}
-                             className="mb-1"
-                           />
-                </Link>
+                <button
+  onClick={scrollToContact}
+  className="inline-flex items-center gap-2 md:gap-3 mt-6 md:mt-8 ml-0 md:ml-5 px-6 md:px-8 py-3 md:py-4 bg-[#d1fd68] text-gray-900 rounded-lg font-bold hover:bg-gray-900 hover:text-white transition-all duration-300 group"
+>
+  <span className="font-['TT_Trailers'] text-xl md:text-3xl tracking-wide">BOOK A STRATEGY CALL</span>
+  <Image src="/images/service.svg" alt="" width={12} height={16} className="mb-1 w-3 h-4 md:w-3 md:h-4" />
+</button>
               </div>
               
-              {/* Stacked Images */}
-              <div className="relative h-[600px] hidden lg:block">
+              {/* Stacked Images - Hidden on mobile, visible on lg */}
+              <div className="relative h-[400px] md:h-[500px] lg:h-[600px] hidden lg:block">
                 <div className="absolute top-140 inset-0 flex items-center justify-center">
                   <div className="relative w-full max-w-md">
                     <Image
@@ -518,27 +536,71 @@ useEffect(() => {
         </section>
 
         {/* Text Marquee */}
-        <TextMarquee />
+        <div className='mt-7'>
+ <TextMarquee />
+        </div>
+       
 
-        {/* Why Choose Us */}
-        <section className="py-20 md:py-32 px-4 sm:px-6 lg:px-8 xl:px-12 bg-white overflow-hidden">
-          <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 xl:px-20">
-            <div className="max-w-2xl mb-16">
-              <h2 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-4 font-['TT_Trailers'] text-[#000000]">
-                Blushush&apos;s strives on branding guidelines
-              </h2>
-              <p className="text-gray-600 text-lg font-['GeneralSans']">
-                We focus on giving your business the visual and verbal identity it needs.
-              </p>
-            </div>
-            
-            <div className="flex flex-wrap justify-center md:justify-start gap-4 py-8 ">
-              {whyChooseCards.map((card, index) => (
-                <WhyChooseCard key={index} {...card} index={index} />
-              ))}
-            </div>
-          </div>
-        </section>
+{/* Why Choose Us - Animated with Proper Stacking */}
+<section className="py-12 md:py-20 lg:py-32 px-4 sm:px-6 lg:px-8 xl:px-12 bg-white overflow-hidden">
+  <div className="w-full px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 xl:px-20">
+    <div className="max-w-2xl mb-8 md:mb-16">
+      <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-3 md:mb-4 font-['TT_Trailers'] text-[#000000] leading-tight">
+        Yourease SEO optimization approach
+      </h2>
+      <p className="text-gray-600 text-base md:text-lg font-['GeneralSans']">
+        We make sure search engines love you enough to let your audience find you. We optimize your content and performance.
+      </p>
+    </div>
+    
+    {/* Desktop View - Cards with proper overlap order */}
+    <div className="hidden md:flex flex-wrap justify-center md:justify-start gap-4 py-8 relative">
+      {whyChooseCards.map((card, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, x: -100 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{
+            duration: 0.6,
+            delay: index * 0.15,
+            ease: "easeOut"
+          }}
+          // Higher index cards appear on top
+          style={{ zIndex: whyChooseCards.length - index }}
+        >
+          <WhyChooseCard {...card} index={index} />
+        </motion.div>
+      ))}
+    </div>
+    
+    {/* Mobile View - No overlap, stacked vertically with smaller cards */}
+    <div className="flex md:hidden flex-col items-center gap-4 py-4">
+      {whyChooseCards.map((card, index) => (
+        <div
+          key={index}
+          className={`rounded-full w-[240px] h-[240px] flex flex-col items-center justify-center p-6 text-center shadow-lg ${
+            card.variant === 'lime' 
+              ? "bg-[#d1fd68] text-gray-900" 
+              : "bg-[#3665fb] text-white"
+          }`}
+        >
+          <h3 className="text-xl font-bold mb-3 font-['GeneralSans'] leading-tight">
+            {card.title.split(' ').map((word, i) => (
+              <React.Fragment key={i}>
+                {word}
+                {i < card.title.split(' ').length - 1 && <br />}
+              </React.Fragment>
+            ))}
+          </h3>
+          <p className={`text-xs leading-relaxed ${card.variant === 'lime' ? 'text-gray-700' : 'text-gray-200'}`}>
+            {card.description}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
 {/* Snap Scroll Section */}
 <section
@@ -552,22 +614,22 @@ useEffect(() => {
   {/* STICKY AREA */}
   <div className="sticky top-0 h-screen w-full">
 
-     <div className="text-center px-4 pt-13 pb-8 bg-white">
-    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold font-['TT_Trailers']">
-      Let us help you redefine yourself
+     <div className="text-center px-4 pt-8 md:pt-13 pb-4 md:pb-8 bg-white">
+    <h2 className="text-5xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold font-['TT_Trailers'] ">
+      Optimize your content, increase your reachability
     </h2>
-    <p className="text-gray-600 text-lg font-['GeneralSans']">
-      We&apos;ll set your narrative to make sure your brand story sells
+    <p className="text-gray-60 text-md md:text-base lg:text-lg font-['GeneralSans'] mt-2">
+      We&apos;ll take care of your SEO optimization and enhance your performance.
     </p>
   </div>
     
     {/* CENTER WRAPPER */}
-    <div className="h-full flex items-start justify-center ">
+    <div className="h-full flex items-start justify-center px-4 sm:px-6">
       
-      {/* 620px CARD */}
-      <div className="w-full max-w-7xl h-[620px] grid md:grid-cols-2 rounded-3xl overflow-hidden shadow-2xl relative">
+      {/* CARD - Full width on mobile, constrained on larger screens */}
+      <div className="w-full max-w-7xl h-[520px] sm:h-[580px] md:h-[620px] grid grid-cols-1 md:grid-cols-2 rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl relative">
 
-        {/* LEFT SIDE */}
+        {/* LEFT SIDE - Content */}
         <div className="relative h-full overflow-hidden">
           {snapCards.map((card, index) => {
             const isDark = card.variant === 'dark';
@@ -576,7 +638,7 @@ useEffect(() => {
             return (
               <div
                 key={card.title}
-                className={`absolute inset-0 w-full h-full flex flex-col justify-center p-8 md:p-12 lg:p-16 transition-transform duration-500 ease-out ${
+                className={`absolute inset-0 w-full h-full flex flex-col justify-center p-5 sm:p-6 md:p-8 lg:p-12 xl:p-16 transition-transform duration-500 ease-out ${
                   isDark
                     ? 'bg-[#3665fb] text-white'
                     : 'bg-[#d1fd68] text-gray-900'
@@ -585,51 +647,47 @@ useEffect(() => {
                   transform: `translateY(${offset}%)`,
                 }}
               >
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 uppercase leading-tight font-['TT_Trailers']">
+                <h2 className="text-4xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 uppercase leading-tight font-['TT_Trailers']">
                   {card.title}
                 </h2>
 
                 <p
-                  className={`text-base md:text-lg mb-8 ${
+                  className={`text-base md:text-lg mb-6 md:mb-8 leading-relaxed ${
                     isDark ? 'text-gray-200' : 'text-gray-700'
                   }`}
                 >
                   {card.description}
                 </p>
 
-                <div className="grid grid-cols-2 gap-6 mb-8">
+                <div className="grid grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
                   {card.stats.map((stat, i) => (
                     <div key={i}>
-                      <div className="text-4xl md:text-5xl font-bold mb-2">
+                      <div className="text-4xl sm:text-5xl md:text-5xl font-bold mb-1 md:mb-2">
                         {stat.value}
                       </div>
-                      <div className="text-sm uppercase">
+                      <div className="text-sm md:text-sm uppercase">
                         {stat.label}
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <Link
-                  href="#contact"
-                  className="inline-flex items-center gap-3 mt-8 px-8 py-2 bg-[#d1fd68] text-gray-900 rounded-lg font-bold text-lg hover:bg-gray-900 hover:text-white transition-all duration-300 group"
-                >
-                  <span className="font-['TT_Trailers'] text-3xl tracking-wide">LET&apos;S TALK</span>
-                 <Image
-                             src="/images/service.svg"
-                             alt=""
-                             width={12}
-                             height={16}
-                             className="mb-1"
-                           />
-                </Link>
+              <div className='w-full sm:w-[220px] md:w-[250px]'>
+                <button
+  onClick={scrollToContact}
+  className={`inline-flex items-center gap-2 md:gap-3 mt-2 md:mt-8 px-5 md:px-8 py-3 md:py-2 bg-white text-gray-900 rounded-lg font-bold text-base md:text-lg hover:bg-gray-900 hover:text-white transition-all duration-300 group`}
+>
+  <span className="font-['TT_Trailers'] text-2xl md:text-3xl tracking-wide">LET&apos;S TALK</span>
+  <Image src="/images/service.svg" alt="" width={12} height={16} className="mb-1 w-3 h-4 md:w-3 md:h-4" />
+</button>
+                </div>
               </div>
             );
           })}
         </div>
 
-        {/* RIGHT SIDE */}
-        <div className="relative h-full overflow-hidden">
+        {/* RIGHT SIDE - Images (Hidden on mobile, visible on md+) */}
+        <div className="relative h-full overflow-hidden hidden md:block">
           {snapCards.map((card, index) => {
             const offset = (activeIndex - index) * 100;
 
@@ -653,14 +711,14 @@ useEffect(() => {
         </div>
 
         {/* DOTS */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+        <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
           {snapCards.map((_, index) => (
             <div
               key={index}
               className={`h-1 rounded-full transition-all ${
                 index === activeIndex
-                  ? 'w-8 bg-white/80'
-                  : 'w-2 bg-white/40'
+                  ? 'w-6 md:w-8 bg-white/80'
+                  : 'w-1.5 md:w-2 bg-white/40'
               }`}
             />
           ))}
@@ -674,26 +732,27 @@ useEffect(() => {
 
 
         {/* Portfolio Section */}
-        <section className="py-20 md:py-32 px-4 sm:px-6 lg:px-8 xl:px-12 bg-white">
+        {/* <section className="py-12 md:py-20 lg:py-32 px-4 sm:px-6 lg:px-8 xl:px-12 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="max-w-3xl mb-16">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 font-['TT_Trailers']">
+            <div className="max-w-3xl mb-8 md:mb-16">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-4 font-['TT_Trailers'] leading-tight">
                 Example of Strategy & Consultation
               </h2>
-              <p className="text-gray-600 text-lg font-['GeneralSans']">
+              <p className="text-gray-600 text-base md:text-lg font-['GeneralSans']">
                 Make unclear design milestones and missed deadlines a thing of the past.
               </p>
             </div>
             
-            <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+            <div className="columns-1 md:columns-2 lg:columns-3 gap-4 md:gap-6 space-y-4 md:space-y-6">
               {portfolioItems.map((item) => (
                 <PortfolioCard key={item.id} {...item} />
               ))}
             </div>
           </div>
-        </section>
+        </section> */}
 
-        <Services/>
+        <Services excludeId={7} />
+        <Contact/>
 
       </main>
     </>

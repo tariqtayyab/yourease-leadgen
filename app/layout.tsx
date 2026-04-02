@@ -12,11 +12,12 @@ export default function RootLayout({
 }) {
   const pathname = usePathname()
   const isLeadsPage = pathname === '/leads' || pathname?.startsWith('/leads/')
+  const isBrandingPage = pathname === '/services' || pathname?.startsWith('/services/')
 
   return (
     <html lang="en">
       <body className="overflow-x-hidden">
-        {!isLeadsPage && <Navbar />}
+        {!isLeadsPage && !isBrandingPage && <Navbar />}
         <main>{children}</main>
         {!isLeadsPage && <Footer />}
       </body>

@@ -13,6 +13,9 @@ interface Lead {
 }
 
 export default function LeadsPage() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
   const [leads, setLeads] = useState<Lead[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
@@ -20,8 +23,22 @@ export default function LeadsPage() {
   const [copiedField, setCopiedField] = useState<string | null>(null)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
-  // Fetch leads from API
+  const correctPassword = process.env.NEXT_PUBLIC_LEADS_PASSWORD || 'yourease2024'
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (password === correctPassword) {
+      setIsAuthenticated(true)
+      setError('')
+    } else {
+      setError('Incorrect password. Please try again.')
+    }
+  }
+
+  // Fetch leads from API (only if authenticated)
   useEffect(() => {
+    if (!isAuthenticated) return
+    
     fetch('/api/leads')
       .then(res => res.json())
       .then(data => {
@@ -32,7 +49,7 @@ export default function LeadsPage() {
         console.error('Failed to fetch leads:', err)
         setLoading(false)
       })
-  }, [])
+  }, [isAuthenticated])
 
   const filteredLeads = useMemo(() => {
     let filtered = leads
@@ -72,46 +89,95 @@ export default function LeadsPage() {
     setTimeout(() => setCopiedField(null), 2000)
   }
 
-const exportToCSV = () => {
-  // Format data properly for Excel
-  const headers = ['Date', 'Time', 'Name', 'Phone', 'Email', 'Message']
-  
-  const rows = filteredLeads.map(lead => {
-    const date = lead?.createdAt ? new Date(lead.createdAt) : new Date()
-    return [
-      date.toLocaleDateString(),
-      date.toLocaleTimeString(),
-      lead?.name || '',
-      lead?.phone || '',  // Keep as string to preserve leading zeros
-      lead?.email || '',
-      lead?.message || ''
-    ]
-  })
-  
-  // Create CSV content with proper escaping
-  const csvContent = [
-    headers.join(','),
-    ...rows.map(row => 
-      row.map(cell => {
-        const str = String(cell)
-        // Quote if: contains comma, quote, newline, OR is empty (to preserve column structure)
-        // Also quote phone numbers that start with 0 to prevent Excel from treating as number
-        const needsQuotes = str.includes(',') || str.includes('"') || str.includes('\n') || str === '' || /^0\d+$/.test(str)
-        const escaped = str.replace(/"/g, '""')
-        return needsQuotes ? `"${escaped}"` : escaped
-      }).join(',')
+  const exportToCSV = () => {
+    // Format data properly for Excel
+    const headers = ['Date', 'Time', 'Name', 'Phone', 'Email', 'Message']
+    
+    const rows = filteredLeads.map(lead => {
+      const date = lead?.createdAt ? new Date(lead.createdAt) : new Date()
+      return [
+        date.toLocaleDateString(),
+        date.toLocaleTimeString(),
+        lead?.name || '',
+        lead?.phone || '',  // Keep as string to preserve leading zeros
+        lead?.email || '',
+        lead?.message || ''
+      ]
+    })
+    
+    // Create CSV content with proper escaping
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => 
+        row.map(cell => {
+          const str = String(cell)
+          // Quote if: contains comma, quote, newline, OR is empty (to preserve column structure)
+          // Also quote phone numbers that start with 0 to prevent Excel from treating as number
+          const needsQuotes = str.includes(',') || str.includes('"') || str.includes('\n') || str === '' || /^0\d+$/.test(str)
+          const escaped = str.replace(/"/g, '""')
+          return needsQuotes ? `"${escaped}"` : escaped
+        }).join(',')
+      )
+    ].join('\n')
+    
+    // Add BOM for UTF-8 to handle special characters
+    const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `leads-${new Date().toISOString().split('T')[0]}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  // Password Screen
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] to-[#0A192F] flex items-center justify-center pt-20">
+        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 w-full max-w-md border border-white/10">
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-neon-lime/20 flex items-center justify-center">
+              <svg className="w-8 h-8 text-neon-lime" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <h2 className="text-white text-2xl font-trailers font-bold mb-2">Authorized Access Only</h2>
+            <p className="text-white/50 text-sm">Please enter the password to view leads</p>
+          </div>
+          
+          <form onSubmit={handleLogin}>
+            <div className="mb-4">
+              <input
+                type="password"
+                placeholder="Enter password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl bg-white/5 text-white border border-white/10 focus:border-neon-lime outline-none transition-colors placeholder-white/30"
+                autoFocus
+              />
+            </div>
+            
+            {error && (
+              <div className="mb-4 text-red-400 text-sm text-center">{error}</div>
+            )}
+            
+            <button
+              type="submit"
+              className="w-full py-3 rounded-xl bg-neon-lime text-dark font-semibold hover:bg-white transition-colors"
+            >
+              Access Dashboard
+            </button>
+          </form>
+          
+          <div className="mt-6 text-center">
+            <p className="text-white/30 text-xs">
+              Protected area. Unauthorized access is prohibited.
+            </p>
+          </div>
+        </div>
+      </div>
     )
-  ].join('\n')
-  
-  // Add BOM for UTF-8 to handle special characters
-  const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `leads-${new Date().toISOString().split('T')[0]}.csv`
-  a.click()
-  URL.revokeObjectURL(url)
-}
+  }
 
   if (loading) {
     return (
@@ -125,13 +191,23 @@ const exportToCSV = () => {
     <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] to-[#0A192F] pt-10 pb-12">
       <div className="container-custom">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-white text-4xl md:text-5xl font-trailers font-bold mb-2">
-            Leads Dashboard
-          </h1>
-          <p className="text-white/50 text-sm">
-            Total leads: {filteredLeads.length} / {leads.length}
-          </p>
+        <div className="mb-8 flex justify-between items-center">
+          <div>
+            <h1 className="text-white text-4xl md:text-5xl font-trailers font-bold mb-2">
+              Leads Dashboard
+            </h1>
+            <p className="text-white/50 text-sm">
+              Total leads: {filteredLeads.length} / {leads.length}
+            </p>
+          </div>
+          
+          {/* Logout Button */}
+          <button
+            onClick={() => setIsAuthenticated(false)}
+            className="px-4 py-2 rounded-lg bg-white/5 text-white/70 border border-white/10 hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/30 transition-all"
+          >
+            Logout
+          </button>
         </div>
 
         {/* Filters */}
